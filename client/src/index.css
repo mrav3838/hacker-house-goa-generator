@@ -66,3 +66,9 @@ footer { min-height: 90px; padding: 0 8vw; display: flex; align-items: center; j
   .identity-artifact.card .artifact-copy h3 { white-space: normal; overflow-wrap: anywhere; }
   .two-col { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* Requested mobile injection mapped to the existing layout classes. */
+@media screen and (max-width: 768px) {
+  .studio-grid { flex-direction: column !important; align-items: center; width: 100%; padding: 20px; }
+  .artifact-column { width: 100% !important; scale: 0.9; }
+}

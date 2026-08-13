@@ -1,6 +1,6 @@
 /* Sunset Frequency direction: a tropical brutalist studio desk; the live identity artifact stays dominant. */
 import { useMemo, useRef, useState } from "react";
-import { toPng } from "html-to-image";
+import html2canvas from "html2canvas";
 import { toast } from "sonner";
 import {
   ArrowDownToLine, ArrowUpRight, Camera, Check, ChevronDown, Copy,
@@ -90,20 +90,20 @@ export default function Home() {
   };
 
   const downloadPng = async () => {
-    if (!artifactRef.current) return;
+    const livePreview = document.querySelector("#live-preview-element-id") as HTMLElement | null;
+    if (!livePreview) return;
     try {
       await document.fonts.ready;
-      const dataUrl = await toPng(artifactRef.current, {
-        cacheBust: true,
-        pixelRatio: 3,
-        backgroundColor: "#101d20",
-        fontEmbedCSS: undefined,
+      const canvas = await html2canvas(livePreview, {
+        useCORS: true,
+        backgroundColor: null,
+        scale: 2,
       });
       const link = document.createElement("a");
-      link.download = `${name.toLowerCase().replace(/\\s+/g, "-")}-hh-goa-2026.png`;
-      link.href = dataUrl;
+      link.download = "builder-card.png";
+      link.href = canvas.toDataURL("image/png");
       link.click();
-      toast.success("Your high-resolution PNG matches the live preview.");
+      toast.success("Your live preview was exported as a PNG.");
     } catch {
       toast.error("The preview could not be exported. Please try again.");
     }
@@ -180,7 +180,7 @@ export default function Home() {
                 <div className="control-block"><div className="block-label"><span>04</span> Pick your frequency</div><div className="theme-grid">{themes.map((item) => <button key={item.id} className={`theme-chip ${theme.id === item.id ? "selected" : ""}`} onClick={() => setTheme(item)}><i style={{ background: item.color }} /><span>{item.name}<small>{item.note}</small></span>{theme.id === item.id && <Check size={14} />}</button>)}</div></div>
               </div>
 
-              <div className="artifact-column"><div className="artifact-label"><span>04 / Artifact</span><span className="artifact-meta"><Sparkles size={13} /> generated live</span></div><div ref={artifactRef} className={`identity-artifact ${format} ${theme.className} collectible-artifact`} style={{ backgroundImage: `linear-gradient(120deg, rgba(18,26,39,.88), rgba(25,18,39,.76)), url(${CARD_TEXTURE})` }}>
+              <div className="artifact-column"><div className="artifact-label"><span>04 / Artifact</span><span className="artifact-meta"><Sparkles size={13} /> generated live</span></div><div id="live-preview-element-id" ref={artifactRef} className={`identity-artifact ${format} ${theme.className} collectible-artifact`} style={{ backgroundImage: `linear-gradient(120deg, rgba(18,26,39,.88), rgba(25,18,39,.76)), url(${CARD_TEXTURE})` }}>
                 <div className="artifact-top"><span>HACKER HOUSE <i>गोवा</i></span><span>OCT 28—31 / 2026</span></div><div className="artifact-main"><div className="portrait-wrap">{photo ? <img src={photo} alt="Portrait" /> : <div className="portrait-placeholder"><span>{initials(name)}</span><small>your portrait<br />goes here</small></div>}<div className="sun-ring" /></div><div className="artifact-copy"><span className="artifact-kicker">BUILDER / SIGNAL 026</span><h3>{name || "Your name"}</h3><p className="artifact-role">{role || "Your discipline"}</p><div className="artifact-divider" /><strong>{builderTitle || "Your builder title"}</strong><p className="artifact-location"><MapPin size={14} /> {location || "Goa, India"}</p><span className="artifact-handle">{handle || "@yourhandle"}</span></div></div><div className="artifact-bottom"><span><Waves size={14} /> LESS NOISE. MORE SIGNAL.</span><span>HHG / 2026</span></div>
               </div><div className="artifact-actions"><button className="primary-action" onClick={downloadPng}><Download size={16} /> Download {activeFormat.title}</button><button className="secondary-action" onClick={shareOnX}><X size={16} /> Share on X</button></div><div className="share-row"><span>SHARE TO</span><button onClick={shareOnX} aria-label="Share on X"><X size={15} /></button><button onClick={shareToInstagram} aria-label="Share on Instagram"><Instagram size={15} /></button><button onClick={shareToLinkedIn} aria-label="Share on LinkedIn"><Linkedin size={15} /></button><button onClick={copyShareLink} aria-label="Copy link"><Copy size={15} /></button></div></div>
             </div>

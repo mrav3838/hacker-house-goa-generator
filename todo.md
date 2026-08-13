@@ -1,6 +1,6 @@
-# Scoped export and mobile patch
+# Exact requested code injections
 
-- [x] Add mobile-only stacking and width containment at max-width 768px without changing desktop CSS.
-- [x] Replace SVG/file-generation export with a high-resolution PNG or JPG export.
-- [x] Capture the exact live preview DOM element so textures, gradients, custom fonts, spacing, borders, avatar, and text match the preview.
-- [x] Verify mobile stacking, desktop preservation, and export code health.
+- [x] Append the mobile max-width 768px stacking and preview-width logic using the existing class names.
+- [x] Ensure the export function outputs image/png.
+- [x] Ensure export captures the exact live preview DOM element with CORS, transparent background, and scale 2.
+- [x] Verify no unrelated design or desktop changes were introduced.
