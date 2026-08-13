@@ -69,14 +69,22 @@ export default function Home() {
     reader.readAsDataURL(file);
   };
 
-  const share = async () => {
-    const shareText = `${name} · ${builderTitle} · Hacker House Goa 2026`;
-    if (navigator.share) {
-      await navigator.share({ title: "My Hacker House Goa identity", text: shareText, url: window.location.href }).catch(() => undefined);
-    } else {
-      await navigator.clipboard?.writeText(`${shareText} — ${window.location.href}`);
-      toast.success("Signal link copied to clipboard.");
-    }
+  const shareOnX = () => {
+    const safe = (value: string) => value.replace(/[<>&\"']/g, (character) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", "\"": "&quot;", "'": "&apos;" })[character] ?? character);
+    const photoMarkup = photo
+      ? `<image href="${photo}" x="210" y="110" width="580" height="580" preserveAspectRatio="xMidYMid slice" clip-path="url(#portrait)"/>`
+      : `<circle cx="500" cy="400" r="290" fill="#123f42"/><text x="500" y="430" text-anchor="middle" fill="${theme.color}" font-family="Arial" font-weight="700" font-size="170">${safe(initials(name))}</text>`;
+    const frameSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1000" viewBox="0 0 1000 1000"><defs><clipPath id="portrait"><circle cx="500" cy="400" r="290"/></clipPath><radialGradient id="sky"><stop stop-color="#3d263f"/><stop offset="1" stop-color="#101d20"/></radialGradient></defs><rect width="1000" height="1000" fill="url(#sky)"/><circle cx="500" cy="400" r="330" fill="none" stroke="${theme.color}" stroke-width="10"/><circle cx="500" cy="400" r="306" fill="none" stroke="#ffc857" stroke-width="2" stroke-dasharray="8 14"/>${photoMarkup}<circle cx="500" cy="400" r="290" fill="none" stroke="${theme.color}" stroke-width="7"/><circle cx="800" cy="180" r="34" fill="#ffc857"/><text x="500" y="790" text-anchor="middle" fill="#f7e8c2" font-family="Arial" font-weight="700" font-size="44" letter-spacing="6">HACKER HOUSE</text><text x="500" y="850" text-anchor="middle" fill="${theme.color}" font-family="Arial" font-style="italic" font-size="42">गोवा</text><text x="500" y="925" text-anchor="middle" fill="#b8ccc0" font-family="Arial" font-size="22" letter-spacing="5">HHG / 2026 · #FRAMEINGOA</text></svg>`;
+    const frameUrl = URL.createObjectURL(new Blob([frameSvg], { type: "image/svg+xml" }));
+    const downloadLink = document.createElement("a");
+    downloadLink.href = frameUrl;
+    downloadLink.download = `${name.toLowerCase().replace(/\s+/g, "-")}-hh-goa-profile-frame.svg`;
+    downloadLink.click();
+    const caption = `My frame is tuned for Hacker House Goa 2026. See you in Goa. #FrameInGoa`;
+    const xUrl = `https://x.com/intent/post?text=${encodeURIComponent(caption)}&url=${encodeURIComponent(window.location.origin + "/generator")}`;
+    window.open(xUrl, "_blank", "noopener,noreferrer");
+    window.setTimeout(() => URL.revokeObjectURL(frameUrl), 1000);
+    toast.success("Your HH Goa profile frame is ready. X is opening with your caption.");
   };
 
   const download = () => {
@@ -136,7 +144,7 @@ export default function Home() {
 
               <div className="artifact-column"><div className="artifact-label"><span>04 / Artifact</span><span className="artifact-meta"><Sparkles size={13} /> generated live</span></div><div className={`identity-artifact ${format} ${theme.className} collectible-artifact`} style={{ backgroundImage: `linear-gradient(120deg, rgba(18,26,39,.88), rgba(25,18,39,.76)), url(${CARD_TEXTURE})` }}>
                 <div className="artifact-top"><span>HACKER HOUSE <i>गोवा</i></span><span>OCT 28—31 / 2026</span></div><div className="artifact-main"><div className="portrait-wrap">{photo ? <img src={photo} alt="Portrait" /> : <div className="portrait-placeholder"><span>{initials(name)}</span><small>your portrait<br />goes here</small></div>}<div className="sun-ring" /></div><div className="artifact-copy"><span className="artifact-kicker">BUILDER / SIGNAL 026</span><h3>{name || "Your name"}</h3><p className="artifact-role">{role || "Your discipline"}</p><div className="artifact-divider" /><strong>{builderTitle || "Your builder title"}</strong><p className="artifact-location"><MapPin size={14} /> {location || "Goa, India"}</p><span className="artifact-handle">{handle || "@yourhandle"}</span></div></div><div className="artifact-bottom"><span><Waves size={14} /> LESS NOISE. MORE SIGNAL.</span><span>HHG / 2026</span></div>
-              </div><div className="artifact-actions"><button className="primary-action" onClick={download}><Download size={16} /> Download {activeFormat.title}</button><button className="secondary-action" onClick={share}><Share2 size={16} /> Share signal</button></div><div className="share-row"><span>SHARE TO</span><button onClick={share} aria-label="Share on LinkedIn"><Linkedin size={15} /></button><button onClick={share} aria-label="Share on Instagram"><Instagram size={15} /></button><button onClick={share} aria-label="Copy link"><Copy size={15} /></button></div></div>
+              </div><div className="artifact-actions"><button className="primary-action" onClick={download}><Download size={16} /> Download {activeFormat.title}</button><button className="secondary-action" onClick={shareOnX}><X size={16} /> Share on X</button></div><div className="share-row"><span>SHARE TO</span><button onClick={shareOnX} aria-label="Share on LinkedIn"><Linkedin size={15} /></button><button onClick={shareOnX} aria-label="Share on Instagram"><Instagram size={15} /></button><button onClick={shareOnX} aria-label="Copy link"><Copy size={15} /></button></div></div>
             </div>
           </div>
         </section>
