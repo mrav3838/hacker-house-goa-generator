@@ -1,5 +1,6 @@
-# Mobile-only revision
+# Functional revision scope
 
-- [x] Remove the phone viewport horizontal overflow and half-visible layout.
-- [x] Do not change desktop composition, colors, copy, backgrounds, typography, headers, components, spacing, or visual styling.
-- [x] Verify the phone layout and desktop layout after the correction.
+- [x] Add mobile-only responsive containment so all content fits inside the phone viewport without changing desktop styling.
+- [x] Change the existing download implementation to raster PNG or JPG output while keeping the download button UI unchanged.
+- [x] Restore distinct share behavior: X share link, Instagram link, LinkedIn link, and Copy clipboard action.
+- [x] Verify desktop visuals remain unchanged and test the mobile layout plus functional handlers.

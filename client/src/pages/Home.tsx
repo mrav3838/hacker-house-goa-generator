@@ -87,6 +87,46 @@ export default function Home() {
     toast.success("Your HH Goa profile frame is ready. X is opening with your caption.");
   };
 
+  const downloadPng = () => {
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760"><defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#171b2a"/><stop offset="1" stop-color="#3d263f"/></linearGradient></defs><rect width="1200" height="760" fill="#101d20"/><rect x="18" y="18" width="1164" height="724" rx="28" fill="url(#bg)" stroke="${theme.color}" stroke-width="4"/><circle cx="190" cy="380" r="135" fill="#0f3b3b" stroke="${theme.color}" stroke-width="5"/>${photo ? `<image href="${photo}" x="55" y="245" width="270" height="270" preserveAspectRatio="xMidYMid slice" clip-path="circle(135px at 135px 135px)"/>` : `<text x="190" y="400" text-anchor="middle" fill="${theme.color}" font-size="56" font-family="Arial" font-weight="700">${initials(name)}</text>`}<text x="420" y="190" fill="#f7e8c2" font-size="58" font-family="Arial" font-weight="700">${name}</text><text x="420" y="250" fill="${theme.color}" font-size="27" font-family="Arial">${role}</text><text x="420" y="340" fill="#f7e8c2" font-size="34" font-family="Arial" font-weight="700">${builderTitle}</text><text x="420" y="430" fill="#9eb5ae" font-size="22" font-family="Arial">${location}  ·  ${handle}</text><text x="950" y="660" fill="${theme.color}" font-size="22" font-family="Arial">HH GOA / 2026</text></svg>`;
+    const image = new Image();
+    image.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = 1200;
+      canvas.height = 760;
+      const context = canvas.getContext("2d");
+      if (!context) return;
+      context.drawImage(image, 0, 0);
+      canvas.toBlob((blob) => {
+        if (!blob) return;
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `${name.toLowerCase().replace(/\\s+/g, "-")}-hh-goa-2026.png`;
+        link.click();
+        URL.revokeObjectURL(url);
+        toast.success("Your PNG identity card is ready to download.");
+      }, "image/png");
+    };
+    image.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+  };
+
+  const shareToInstagram = () => {
+    window.open("https://www.instagram.com/", "_blank", "noopener,noreferrer");
+    toast.info("Instagram is opening. Use the downloaded PNG to update your profile or post.");
+  };
+
+  const shareToLinkedIn = () => {
+    const shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.origin + "/generator")}`;
+    window.open(shareUrl, "_blank", "noopener,noreferrer");
+  };
+
+  const copyShareLink = async () => {
+    const shareText = `${name} · ${builderTitle} · Hacker House Goa 2026 #FrameInGoa — ${window.location.origin}/generator`;
+    await navigator.clipboard?.writeText(shareText);
+    toast.success("Caption and generator link copied.");
+  };
+
   const download = () => {
     const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760"><rect width="1200" height="760" fill="#101d20"/><rect x="18" y="18" width="1164" height="724" rx="28" fill="#171b2a" stroke="${theme.color}" stroke-width="4"/><circle cx="190" cy="380" r="135" fill="#0f3b3b" stroke="${theme.color}" stroke-width="5"/><text x="190" y="390" text-anchor="middle" fill="${theme.color}" font-size="56" font-family="Arial" font-weight="700">${initials(name)}</text><text x="420" y="190" fill="#f7e8c2" font-size="58" font-family="Arial" font-weight="700">${name}</text><text x="420" y="250" fill="${theme.color}" font-size="27" font-family="Arial">${role}</text><text x="420" y="340" fill="#f7e8c2" font-size="34" font-family="Arial" font-weight="700">${builderTitle}</text><text x="420" y="430" fill="#9eb5ae" font-size="22" font-family="Arial">${location}  ·  ${handle}</text><text x="950" y="660" fill="${theme.color}" font-size="22" font-family="Arial">HH GOA / 2026</text></svg>`;
     const blob = new Blob([svg], { type: "image/svg+xml" });
@@ -144,7 +184,7 @@ export default function Home() {
 
               <div className="artifact-column"><div className="artifact-label"><span>04 / Artifact</span><span className="artifact-meta"><Sparkles size={13} /> generated live</span></div><div className={`identity-artifact ${format} ${theme.className} collectible-artifact`} style={{ backgroundImage: `linear-gradient(120deg, rgba(18,26,39,.88), rgba(25,18,39,.76)), url(${CARD_TEXTURE})` }}>
                 <div className="artifact-top"><span>HACKER HOUSE <i>गोवा</i></span><span>OCT 28—31 / 2026</span></div><div className="artifact-main"><div className="portrait-wrap">{photo ? <img src={photo} alt="Portrait" /> : <div className="portrait-placeholder"><span>{initials(name)}</span><small>your portrait<br />goes here</small></div>}<div className="sun-ring" /></div><div className="artifact-copy"><span className="artifact-kicker">BUILDER / SIGNAL 026</span><h3>{name || "Your name"}</h3><p className="artifact-role">{role || "Your discipline"}</p><div className="artifact-divider" /><strong>{builderTitle || "Your builder title"}</strong><p className="artifact-location"><MapPin size={14} /> {location || "Goa, India"}</p><span className="artifact-handle">{handle || "@yourhandle"}</span></div></div><div className="artifact-bottom"><span><Waves size={14} /> LESS NOISE. MORE SIGNAL.</span><span>HHG / 2026</span></div>
-              </div><div className="artifact-actions"><button className="primary-action" onClick={download}><Download size={16} /> Download {activeFormat.title}</button><button className="secondary-action" onClick={shareOnX}><X size={16} /> Share on X</button></div><div className="share-row"><span>SHARE TO</span><button onClick={shareOnX} aria-label="Share on LinkedIn"><Linkedin size={15} /></button><button onClick={shareOnX} aria-label="Share on Instagram"><Instagram size={15} /></button><button onClick={shareOnX} aria-label="Copy link"><Copy size={15} /></button></div></div>
+              </div><div className="artifact-actions"><button className="primary-action" onClick={downloadPng}><Download size={16} /> Download {activeFormat.title}</button><button className="secondary-action" onClick={shareOnX}><X size={16} /> Share on X</button></div><div className="share-row"><span>SHARE TO</span><button onClick={shareOnX} aria-label="Share on X"><X size={15} /></button><button onClick={shareToInstagram} aria-label="Share on Instagram"><Instagram size={15} /></button><button onClick={shareToLinkedIn} aria-label="Share on LinkedIn"><Linkedin size={15} /></button><button onClick={copyShareLink} aria-label="Copy link"><Copy size={15} /></button></div></div>
             </div>
           </div>
         </section>

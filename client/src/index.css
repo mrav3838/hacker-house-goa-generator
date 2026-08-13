@@ -54,3 +54,15 @@ footer { min-height: 90px; padding: 0 8vw; display: flex; align-items: center; j
   .identity-artifact.card .artifact-role, .identity-artifact.card .artifact-copy > strong, .identity-artifact.card .artifact-handle { overflow-wrap: anywhere; }
   .two-col { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* Requested mobile responsiveness only; desktop styles above remain unchanged. */
+@media (max-width: 768px) {
+  html, body, #root { width: 100%; max-width: 100%; overflow-x: hidden; }
+  .site-shell, .topbar, main, .workbench, .studio-panel, .studio-grid, .controls, .artifact-column { width: 100%; min-width: 0; max-width: 100%; }
+  .studio-panel, .artifact-column { overflow: hidden; }
+  .identity-artifact { width: 100%; min-width: 0; max-width: 100%; }
+  .identity-artifact.card .artifact-main { flex-wrap: wrap; }
+  .identity-artifact.card .artifact-copy { width: calc(100% - 125px); min-width: 0; }
+  .identity-artifact.card .artifact-copy h3 { white-space: normal; overflow-wrap: anywhere; }
+  .two-col { grid-template-columns: minmax(0, 1fr); }
+}
