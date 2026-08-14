@@ -57,3 +57,45 @@ footer { min-height: 90px; padding: 0 8vw; display: flex; align-items: center; j
   .identity-artifact.card .artifact-role, .identity-artifact.card .artifact-copy > strong, .identity-artifact.card .artifact-handle { overflow-wrap: anywhere; }
   .two-col { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* Phone-only refinements for narrow screens; desktop and tablet layouts remain unchanged. */
+@media (max-width: 480px) {
+  .topbar { height: 64px; padding: 0 16px; }
+  .brand { gap: 7px; }
+  .brand-mark { width: 28px; height: 28px; }
+  .brand-words strong { font-size: 16px; }
+  .brand-words em { font-size: 19px; }
+  .hero { min-height: 490px; padding: 46px 16px 82px; }
+  .hero h1 { font-size: 64px; line-height: .88; }
+  .hero-copy > p { max-width: 285px; font-size: 13px; }
+  .hero-stamp { right: 18px; bottom: 64px; width: 94px; height: 94px; }
+  .hero-stamp strong { font-size: 39px; }
+  .hero-stamp span { font-size: 8px; }
+  .hero-stamp small { font-size: 6px; }
+  .workbench { padding: 38px 16px 58px; }
+  .studio-panel { box-shadow: 6px 6px 0 rgba(255,107,94,.06); }
+  .panel-bar { height: auto; min-height: 46px; padding: 11px 13px; font-size: 8px; }
+  .panel-bar small { display: block; margin: 3px 0 0; }
+  .panel-index { font-size: 8px; }
+  .control-block { padding: 17px 14px; }
+  .format-grid { grid-template-columns: 1fr; }
+  .format-card { min-height: 58px; grid-template-columns: 30px 1fr auto; align-items: center; column-gap: 8px; }
+  .format-card small { grid-column: 2; }
+  .format-icon { grid-row: 1 / span 2; }
+  .theme-grid { grid-template-columns: 1fr; }
+  .artifact-column { padding: 14px; }
+  .artifact-label { font-size: 8px; }
+  .artifact-meta { font-size: 7px; }
+  .identity-artifact { min-height: 340px; padding: 14px; }
+  .identity-artifact.card .artifact-main { gap: 12px; }
+  .identity-artifact.card .artifact-copy { width: calc(100% - 96px); }
+  .identity-artifact.card .artifact-copy h3 { font-size: 31px; line-height: .9; }
+  .identity-artifact.card .artifact-role, .identity-artifact.card .artifact-copy > strong { font-size: 10px; }
+  .portrait-wrap { width: 84px; height: 84px; }
+  .portrait-wrap img, .portrait-placeholder { width: 70px; height: 70px; top: 7px; left: 7px; }
+  .portrait-placeholder span { font-size: 33px; }
+  .artifact-divider { margin: 13px 0 9px; }
+  .artifact-location, .artifact-handle { font-size: 8px; }
+  .artifact-actions { grid-template-columns: 1fr; }
+  .share-row { flex-wrap: wrap; }
+}
