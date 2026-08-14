@@ -1,6 +1,6 @@
-# Exact requested code injections
+# Exact technical injections
 
-- [x] Append the mobile max-width 768px stacking and preview-width logic using the existing class names.
-- [x] Ensure the export function outputs image/png.
-- [x] Ensure export captures the exact live preview DOM element with CORS, transparent background, and scale 2.
-- [x] Verify no unrelated design or desktop changes were introduced.
+- [x] Apply the max-width 768px mobile stacking rule to the existing form/preview wrapper and preview classes.
+- [x] Ensure the existing export handler outputs image/png only.
+- [x] Ensure html2canvas targets `#live-preview-element-id` with CORS, transparent background, and scale 2.
+- [x] Verify the desktop UI remains unchanged.
