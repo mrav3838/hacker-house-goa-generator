@@ -8,9 +8,10 @@ import {
   MapPin, Menu, Palette, Send, Share2, Sparkles, Sun, Waves, X,
 } from "lucide-react";
 
-const HERO = "/manus-storage/goa-sunset-hero_c30ffcdd.jpg";
-const CARD_TEXTURE = "/manus-storage/goa-card-texture_a60a36b7.jpg";
-const LOGO = "/manus-storage/hh-sun-wave-logo_bec6c0e1.png";
+const ASSET_BASE = import.meta.env.BASE_URL;
+const HERO = `${ASSET_BASE}assets/goa-sunset-hero.jpg`;
+const CARD_TEXTURE = `${ASSET_BASE}assets/goa-card-texture.jpg`;
+const LOGO = `${ASSET_BASE}assets/hh-sun-wave-logo.png`;
 
 const themes = [
   { id: "guava", name: "Sunset Guava", note: "last light", color: "#FF6B5E", className: "theme-guava" },
